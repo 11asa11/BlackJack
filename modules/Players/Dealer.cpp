@@ -28,12 +28,12 @@ void Dealer::Distribute_Winnings(std::vector<BJ_Player>& players) {
 		}
 		else if (p_points <= 21 && d_points > 21) {
 			i.Win(i.getBet() * coeff_win);
-			this->Lose(i.getBet());
+			this->Lose(i.getBet() / 2);
 		}
 		else if (p_points <= 21 && d_points <=21) {
 			if (p_points > d_points) {
 				i.Win(i.getBet() * coeff_win);
-				this->Lose(i.getBet());
+				this->Lose(i.getBet() / 2);
 			}
 			else if (p_points < d_points) {
 				this->Win(i.getBet());

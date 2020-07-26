@@ -11,7 +11,7 @@ void BlackJack::addPlayer(std::size_t bank) {
 void BlackJack::players_makeBet() {
     int count = 1;
     for (auto& i : players) {
-        std::cout << "You are player number: " << count<<". Your money : " << i.getMoney()<<std::endl;
+        std::cout << "You are player number: " << count<<". Your money: " << i.getMoney()<<std::endl;
         std::cout << "Make a bet: ";
         std::size_t bet = 0;
         std::cin >> bet;
@@ -21,7 +21,7 @@ void BlackJack::players_makeBet() {
 }
 
 void BlackJack::showCards() {
-    std::cout<< "SHOW CARD AFTER FIRST HAND"<<std::endl;
+    std::cout << "----------SHOW CARDS AFTER FIRST HAND----------" << std::endl;
     dealer.view_FirstCard();
     int count = 1;
     for (auto& i : players) {
@@ -58,7 +58,8 @@ void BlackJack::startGame() {
 	std::cout << std::endl << std::endl;
 
 	if(dealer.isBlackJack()) {
-        dealer.Distribute_Winnings(players);
+        //dealer.Distribute_Winnings(players); ???
+        std::cout<<"DEALER WON"<<std::endl;
         for (auto& i : players) {
             dealer.Win(i.getBet());
         }
@@ -71,7 +72,8 @@ void BlackJack::startGame() {
             i.viewInfo();
             if (i.isBlackJack()) {
                 std::cout << "Congratulations - BlackJack!" << std::endl;
-            } else {
+            }
+            else {
                 int flag = 0;
                 std::cout << "Do you want to take another card? If YES press 1, else 0: ";
                 std::cin >> flag;
@@ -80,8 +82,17 @@ void BlackJack::startGame() {
                     std::cout << "Your cards: " << std::endl;
                     i.viewInfo();
                     std::cout << "Number of cards: " << deckpile.size() << std::endl;
-                    std::cout << "Do you want to take another card? If YES press 1, else 0: ";
-                    std::cin >> flag;
+                    if(i.Points()>21) {
+                        std::cout<<"YOU LOSE"<<std::endl;
+                        flag = 0;
+                    }
+                    else if (i.Points()<= 20) {
+                        std::cout << "Do you want to take another card? If YES press 1, else 0: ";
+                        std::cin >> flag;
+                    }
+                    else {
+                        flag = 0;
+                    }
                 }
             }
             count++;
@@ -93,21 +104,27 @@ void BlackJack::startGame() {
         std::cout << "Your money: " << dealer.getMoney() << std::endl;
         std::cout << "Your cards: " << std::endl;
         dealer.viewInfo();
-        if (dealer.isBlackJack()) {
-            std::cout << "Congratulations - BlackJack!" << std::endl;
-        } else {
-            int flag = 0;
-            std::cout << "Do you want to take another card? If YES press 1, else 0: ";
-            std::cin >> flag;
-            while (flag == 1) {
-                dealer.giveOneMore_Card(dealer, deckpile);
-                std::cout << "Your cards: " << std::endl;
-                dealer.viewInfo();
-                std::cout << "Number of cards: " << deckpile.size() << std::endl;
+        int flag = 0;
+        std::cout << "Do you want to take another card? If YES press 1, else 0: ";
+        std::cin >> flag;
+        while (flag == 1) {
+            dealer.giveOneMore_Card(dealer, deckpile);
+            std::cout << "Your cards: " << std::endl;
+            dealer.viewInfo();
+            std::cout << "Number of cards: " << deckpile.size() << std::endl;
+            if(dealer.Points()>21) {
+                std::cout<<"YOU LOSE"<<std::endl;
+                flag = 0;
+            }
+            else if (dealer.Points()<= 20) {
                 std::cout << "Do you want to take another card? If YES press 1, else 0: ";
                 std::cin >> flag;
             }
+            else {
+                flag = 0;
+            }
         }
+
 
 
         /*std::cout << std::endl << std::endl;
