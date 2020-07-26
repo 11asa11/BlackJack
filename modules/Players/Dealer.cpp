@@ -18,7 +18,7 @@ void Dealer::giveOneMore_Card(BJ_Player& player, DeckPile& dp) {
 }
 
 void Dealer::Distribute_Winnings(std::vector<BJ_Player>& players) {
-	std::size_t coeff_win = 2;
+	double coeff_win = 1.5;
 	std::size_t d_points = this->Points();
 	for (auto& i : players) {
 		std::size_t p_points = i.Points();
@@ -46,6 +46,10 @@ void Dealer::Distribute_Winnings(std::vector<BJ_Player>& players) {
 			this->Win(i.getBet()); // or nothing
 		}
 	}
+}
+
+void Dealer::view_FirstCard() {
+    std::cout << "The 1st card of dealer: "<< player_hand.showInfo().front() << std::endl;
 }
 
 void Dealer::Lose(std::size_t lose) {

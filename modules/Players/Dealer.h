@@ -15,6 +15,8 @@ public:
 	 
 	void Distribute_Winnings(std::vector<BJ_Player>& players);
 
+	void view_FirstCard();
+
 	void Lose(std::size_t bet);
 
 };
