@@ -12,10 +12,13 @@ std::size_t BJ_Player::getMoney() {
 
 void BJ_Player::makeBet(std::size_t bet) {
 	try {
-		this->money -= bet;
-		this->bet = bet;
-		if (this->money < 0)
-			throw "not enough money";
+		if (static_cast<int>(this->money - bet) < 0) {
+            throw "not enough money";
+        }
+		else {
+            this->money -= bet;
+            this->bet = bet;
+		}
 	}
 	catch (const char* ex) {
 		std::cout << ex << std::endl;
@@ -63,4 +66,15 @@ std::size_t BJ_Player::Points() {
 
 bool BJ_Player::isBlackJack() {
 	return Points() == 21;
+}
+
+void BJ_Player::Double() {
+    if (static_cast<int>(money - bet) < 0) {
+        std::cout<<"money="<<money<<". bet="<<bet<<std::endl;
+        throw "Not enough money";
+    }
+    else {
+        money -= bet;
+        bet = bet * 2;
+    }
 }

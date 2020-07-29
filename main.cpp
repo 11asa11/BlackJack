@@ -4,7 +4,7 @@
 int main()
 {
     setlocale(LC_ALL, "rus");
-    BlackJack bj(100);
+    BlackJack bj;
     bj.startGame();
     return 0;
 }

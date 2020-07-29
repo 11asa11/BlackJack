@@ -44,6 +44,8 @@ void BlackJack::startGame() {
 	}
     std::cout<<std::endl;
 
+	std::cout<<"H - HIT. S - STAND. D - DOUBLE"<<std::endl<<std::endl;
+
 	players_makeBet();
 
 	dealer.Hand_Out_Cards(players, deckpile);
@@ -74,24 +76,47 @@ void BlackJack::startGame() {
                 std::cout << "Congratulations - BlackJack!" << std::endl;
             }
             else {
-                int flag = 0;
-                std::cout << "Do you want to take another card? If YES press 1, else 0: ";
+                char flag;
+                std::cout<<"Action: ";
                 std::cin >> flag;
-                while (flag == 1) {
-                    dealer.giveOneMore_Card(i, deckpile);
+                if(flag == 'D') {
+                    try {
+                        i.Double();
+                        dealer.giveOneMore_Card(i, deckpile);
+                    }
+                    catch(const char* str) {
+                        std::cout<<str<<std::endl;
+                    }
                     std::cout << "Your cards: " << std::endl;
                     i.viewInfo();
-                    std::cout << "Number of cards: " << deckpile.size() << std::endl;
+                    //std::cout << "Number of cards: " << deckpile.size() << std::endl;
                     if(i.Points()>21) {
                         std::cout<<"YOU LOSE"<<std::endl;
-                        flag = 0;
+                        flag = 'S';
                     }
                     else if (i.Points()<= 20) {
-                        std::cout << "Do you want to take another card? If YES press 1, else 0: ";
+                        std::cout<<"Action: ";
                         std::cin >> flag;
                     }
-                    else {
-                        flag = 0;
+                    else
+                        flag = 'S';
+                }
+                if (flag == 'H') {
+                    while (flag == 'H') {
+                        dealer.giveOneMore_Card(i, deckpile);
+                        std::cout << "Your cards: " << std::endl;
+                        i.viewInfo();
+                        //std::cout << "Number of cards: " << deckpile.size() << std::endl;
+                        if(i.Points()>21) {
+                            std::cout<<"YOU LOSE"<<std::endl;
+                            flag = 'S';
+                        }
+                        else if (i.Points()<= 20) {
+                            std::cout<<"Action: ";
+                            std::cin >> flag;
+                        }
+                        else
+                            flag = 'S';
                     }
                 }
             }
@@ -100,37 +125,17 @@ void BlackJack::startGame() {
 
 
         std::cout << std::endl << std::endl;
-        std::cout << "----------YOU ARE DEALER----------" << std::endl;
-        std::cout << "Your money: " << dealer.getMoney() << std::endl;
-        std::cout << "Your cards: " << std::endl;
+        std::cout << "----------DEALER----------" << std::endl;
+        std::cout << "Dealer`s money: " << dealer.getMoney() << std::endl;
+        std::cout << "Dealer`s cards: " << std::endl;
         dealer.viewInfo();
-        int flag = 0;
-        std::cout << "Do you want to take another card? If YES press 1, else 0: ";
-        std::cin >> flag;
-        while (flag == 1) {
-            dealer.giveOneMore_Card(dealer, deckpile);
-            std::cout << "Your cards: " << std::endl;
-            dealer.viewInfo();
-            std::cout << "Number of cards: " << deckpile.size() << std::endl;
-            if(dealer.Points()>21) {
-                std::cout<<"YOU LOSE"<<std::endl;
-                flag = 0;
-            }
-            else if (dealer.Points()<= 20) {
-                std::cout << "Do you want to take another card? If YES press 1, else 0: ";
-                std::cin >> flag;
-            }
-            else {
-                flag = 0;
-            }
-        }
-
-
-
-        /*std::cout << std::endl << std::endl;
-        std::cout << "----------COMPARING CARDS----------" << std::endl;*/
+        std::cout<<"Dealer is playing"<<std::endl<<std::endl;
+        dealer.Play(deckpile);
+        dealer.viewInfo();
         dealer.Distribute_Winnings(players);
     }
+
+
     std::cout << std::endl << std::endl;
     std::cout << "----------COMPARING CARDS----------" << std::endl;
     count = 1;

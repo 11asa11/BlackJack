@@ -52,6 +52,12 @@ void Dealer::view_FirstCard() {
     std::cout << "The 1st card of dealer: "<< player_hand.showInfo().front() << std::endl;
 }
 
+void Dealer::Play(DeckPile& dp) {
+    while(Points() < 15) {
+        giveOneMore_Card(*this,dp);
+    }
+}
+
 void Dealer::Lose(std::size_t lose) {
 	money -= lose;
 }

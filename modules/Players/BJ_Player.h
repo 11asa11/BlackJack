@@ -29,4 +29,6 @@ public:
 	void viewInfo();
 	std::size_t Points();
 	bool isBlackJack();
+
+	void Double();
 };

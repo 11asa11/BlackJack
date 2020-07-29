@@ -17,6 +17,10 @@ public:
 
 	void view_FirstCard();
 
+	void Play(DeckPile&);
+
 	void Lose(std::size_t bet);
+
+	void Double() = delete;
 
 };
