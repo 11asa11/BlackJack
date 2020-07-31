@@ -1,8 +1,7 @@
 #include "BlackJack.h"
 
-BlackJack::BlackJack(std::size_t DealerBank, std::size_t deckpile) : dealer(DealerBank), deckpile(deckpile) {
-	//dealer.setMoney(DealerBank);
-}
+//BlackJack::BlackJack(std::size_t DealerBank, std::size_t deckpile) : dealer(DealerBank), deckpile(deckpile) {}
+BlackJack::BlackJack(std::size_t deckpile_s) :deckpile(deckpile_s) {}
 
 void BlackJack::addPlayer(std::size_t bank) {
 	players.push_back(BJ_Player(bank));
@@ -49,10 +48,10 @@ void BlackJack::startRound() {
 
     if(dealer.isBlackJack()) {
         //dealer.Distribute_Winnings(players); ???
-        std::cout<<"DEALER WON"<<std::endl;
-        for (auto& i : players) {
+        std::cout<<"DEALER WON - BlackJack"<<std::endl;
+        /*for (auto& i : players) {
             dealer.Win(i.getBet());
-        }
+        }*/
     }
     else {
         for (auto &i : players) {
@@ -77,7 +76,6 @@ void BlackJack::startRound() {
                     }
                     std::cout << "Your cards:" << std::endl;
                     i.viewInfo();
-                    //std::cout << "Number of cards: " << deckpile.size() << std::endl;
                     if(i.Points()>21) {
                         std::cout<<"YOU LOSE"<<std::endl;
                         flag = 'S';
@@ -90,7 +88,6 @@ void BlackJack::startRound() {
                         dealer.giveOneMore_Card(i, deckpile);
                         std::cout << "Your cards:" << std::endl;
                         i.viewInfo();
-                        //std::cout << "Number of cards: " << deckpile.size() << std::endl;
                         if(i.Points()>21) {
                             std::cout<<"YOU LOSE"<<std::endl;
                             flag = 'S';
@@ -112,10 +109,13 @@ void BlackJack::startRound() {
 
         std::cout << std::endl << std::endl;
         std::cout << "----------DEALER----------" << std::endl;
-        std::cout << "Dealer`s money: " << dealer.getMoney() << std::endl;
+        //std::cout << "Dealer`s money: " << dealer.getMoney() << std::endl;
         std::cout << "Dealer`s cards: " << std::endl;
         dealer.Play(deckpile);
         dealer.viewInfo();
+        if(dealer.isBlackJack()) {
+            std::cout<<"BlackJack"<<std::endl;
+        }
         dealer.Distribute_Winnings(players);
     }
 
@@ -127,7 +127,7 @@ void BlackJack::startRound() {
         std::cout << "Player number " << count << " has money - " << i.getMoney() << std::endl;
         count++;
     }
-    std::cout << "Dealer has money - " << dealer.getMoney();
+    //std::cout << "Dealer has money - " << dealer.getMoney();
     std::cout << std::endl<<std::endl;
 }
 

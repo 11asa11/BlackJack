@@ -2,7 +2,7 @@
 
 Dealer::Dealer() {}
 
-Dealer::Dealer(std::size_t bank) : BJ_Player(bank) {}
+//Dealer::Dealer(std::size_t bank) : BJ_Player(bank) {}
 
 void Dealer::Hand_Out_Cards(std::vector<BJ_Player>& players, DeckPile& dp) {
 	for (auto& i : players) {
@@ -18,6 +18,43 @@ void Dealer::giveOneMore_Card(BJ_Player& player, DeckPile& dp) {
 }
 
 void Dealer::Distribute_Winnings(std::vector<BJ_Player>& players) {
+    double coeff_win = 2;
+    double coeff_blackj = 1.5;
+    std::size_t d_points = this->Points();
+    for (auto& i : players) {
+        std::size_t p_points = i.Points();
+
+        if (p_points > 21 && d_points <= 21) {
+            continue;
+        }
+        else if (p_points <= 21 && d_points > 21) {
+            if(i.isBlackJack()) {
+                i.Win(i.getBet() * coeff_blackj);
+            }
+            else {
+                i.Win(i.getBet() * coeff_win);
+            }
+        }
+        else if (p_points <= 21 && d_points <=21) {
+            if (p_points > d_points) {
+                if(i.isBlackJack()) {
+                    i.Win(i.getBet() * coeff_blackj);
+                }
+                else {
+                    i.Win(i.getBet() * coeff_win);
+                }
+            }
+            else if (p_points == d_points) {
+                i.Win(i.getBet());
+            }
+            else {
+                continue;;
+            }
+        }
+    }
+}
+
+/*void Dealer::Distribute_Winnings(std::vector<BJ_Player>& players) {
 	double coeff_win = 2;
 	double coeff_blackj = 1.5;
 	std::size_t d_points = this->Points();
@@ -59,7 +96,7 @@ void Dealer::Distribute_Winnings(std::vector<BJ_Player>& players) {
 			this->Win(i.getBet()); // or nothing?
 		}
 	}
-}
+}*/
 
 void Dealer::view_FirstCard() {
     std::cout << "Dealer has: "<< player_hand.showInfo().front() << "  and  ##" << std::endl;
@@ -71,7 +108,7 @@ void Dealer::Play(DeckPile& dp) {
     }
 }
 
-void Dealer::Lose(std::size_t lose) {
+/*void Dealer::Lose(std::size_t lose) {
     try {
         if(money < lose)
             throw "Not enough money";
@@ -81,4 +118,4 @@ void Dealer::Lose(std::size_t lose) {
     catch(const char* ex) {
         std::cout<<ex<<std::endl;
     }
-}
+}*/

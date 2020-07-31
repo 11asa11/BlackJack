@@ -6,8 +6,9 @@
 
 class BJ_Player : public Player
 {
+private:
+    std::size_t money;
 protected:
-	std::size_t money;
 	Hand player_hand;
 	std::size_t bet = 0;
 public:
@@ -16,10 +17,10 @@ public:
 	void setMoney(std::size_t money);
 	std::size_t getMoney();
 
-	void makeBet(std::size_t bet);
+	void makeBet(std::size_t bet) final;
 	std::size_t getBet();
 
-	std::size_t Win(std::size_t bet);
+	std::size_t Win(std::size_t bet) final;
 	//void Lose(std::size_t bet);
 
 	void check_ACE_card(Card& card);
