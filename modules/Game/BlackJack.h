@@ -13,5 +13,6 @@ public:
 	void players_makeBet();
 	// show cards on the table after the first hand
 	void showCards();
+	void startRound();
 	void startGame();
 };

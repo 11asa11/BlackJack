@@ -30,5 +30,8 @@ public:
 	std::size_t Points();
 	bool isBlackJack();
 
+    //clear your hand of cards
+	void clearHand();
+
 	void Double();
 };

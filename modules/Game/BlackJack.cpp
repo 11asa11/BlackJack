@@ -11,8 +11,8 @@ void BlackJack::addPlayer(std::size_t bank) {
 void BlackJack::players_makeBet() {
     int count = 1;
     for (auto& i : players) {
-        std::cout << "You are player number: " << count<<". Your money: " << i.getMoney()<<std::endl;
-        std::cout << "Make a bet: ";
+        std::cout << "You are player number: " << count<<". Your money:" << i.getMoney()<<std::endl;
+        std::cout << "Make a bet:";
         std::size_t bet = 0;
         std::cin >> bet;
         i.makeBet(bet);
@@ -31,45 +31,33 @@ void BlackJack::showCards() {
     }
 }
 
-void BlackJack::startGame() {
+void BlackJack::startRound() {
+    std::cout<<"----------ROUND STARTED----------"<<std::endl;
 
-	std::size_t num_players = 0;
-	std::cout << "Enter number of players: ";
-	std::cin >> num_players;
-	for (std::size_t i = 1; i <= num_players; i++) {
-		std::size_t money = 0;
-		std::cout << "Enter amount of money the player number " << i << " has: ";
-		std::cin >> money;
-		players.emplace_back(money);
-	}
-    std::cout<<std::endl;
+    players_makeBet();
 
-	std::cout<<"H - HIT. S - STAND. D - DOUBLE"<<std::endl<<std::endl;
-
-	players_makeBet();
-
-	dealer.Hand_Out_Cards(players, deckpile);
-	dealer.Hand_Out_Cards(players, deckpile);
+    dealer.Hand_Out_Cards(players, deckpile);
+    dealer.Hand_Out_Cards(players, deckpile);
 
     std::cout << std::endl << std::endl;
 
-	showCards();
+    showCards();
 
-	int count = 1;
+    int count = 1;
 
-	std::cout << std::endl << std::endl;
+    std::cout << std::endl << std::endl;
 
-	if(dealer.isBlackJack()) {
+    if(dealer.isBlackJack()) {
         //dealer.Distribute_Winnings(players); ???
         std::cout<<"DEALER WON"<<std::endl;
         for (auto& i : players) {
             dealer.Win(i.getBet());
         }
-	}
+    }
     else {
         for (auto &i : players) {
             std::cout << "----------YOU ARE PLAYER----------" << std::endl;
-            std::cout << "You are player number: " << count << std::endl;
+            std::cout << "You are player number:" << count << std::endl;
             std::cout << "Your cards: " << std::endl;
             i.viewInfo();
             if (i.isBlackJack()) {
@@ -77,7 +65,7 @@ void BlackJack::startGame() {
             }
             else {
                 char flag;
-                std::cout<<"Action: ";
+                std::cout<<"Action:";
                 std::cin >> flag;
                 if(flag == 'D') {
                     try {
@@ -87,16 +75,12 @@ void BlackJack::startGame() {
                     catch(const char* str) {
                         std::cout<<str<<std::endl;
                     }
-                    std::cout << "Your cards: " << std::endl;
+                    std::cout << "Your cards:" << std::endl;
                     i.viewInfo();
                     //std::cout << "Number of cards: " << deckpile.size() << std::endl;
                     if(i.Points()>21) {
                         std::cout<<"YOU LOSE"<<std::endl;
                         flag = 'S';
-                    }
-                    else if (i.Points()<= 20) {
-                        std::cout<<"Action: ";
-                        std::cin >> flag;
                     }
                     else
                         flag = 'S';
@@ -104,7 +88,7 @@ void BlackJack::startGame() {
                 if (flag == 'H') {
                     while (flag == 'H') {
                         dealer.giveOneMore_Card(i, deckpile);
-                        std::cout << "Your cards: " << std::endl;
+                        std::cout << "Your cards:" << std::endl;
                         i.viewInfo();
                         //std::cout << "Number of cards: " << deckpile.size() << std::endl;
                         if(i.Points()>21) {
@@ -112,11 +96,13 @@ void BlackJack::startGame() {
                             flag = 'S';
                         }
                         else if (i.Points()<= 20) {
-                            std::cout<<"Action: ";
+                            std::cout<<"Action:";
                             std::cin >> flag;
                         }
-                        else
+                        else {
+                            std::cout << "Congratulations - BlackJack!" << std::endl;
                             flag = 'S';
+                        }
                     }
                 }
             }
@@ -128,8 +114,6 @@ void BlackJack::startGame() {
         std::cout << "----------DEALER----------" << std::endl;
         std::cout << "Dealer`s money: " << dealer.getMoney() << std::endl;
         std::cout << "Dealer`s cards: " << std::endl;
-        dealer.viewInfo();
-        std::cout<<"Dealer is playing"<<std::endl<<std::endl;
         dealer.Play(deckpile);
         dealer.viewInfo();
         dealer.Distribute_Winnings(players);
@@ -139,9 +123,58 @@ void BlackJack::startGame() {
     std::cout << std::endl << std::endl;
     std::cout << "----------COMPARING CARDS----------" << std::endl;
     count = 1;
-	for (auto& i : players) {
-		std::cout << "Player number " << count << " has money - " << i.getMoney() << std::endl;
-		count++;
+    for (auto& i : players) {
+        std::cout << "Player number " << count << " has money - " << i.getMoney() << std::endl;
+        count++;
+    }
+    std::cout << "Dealer has money - " << dealer.getMoney();
+    std::cout << std::endl<<std::endl;
+}
+
+void BlackJack::startGame() {
+
+	std::size_t num_players = 0;
+	std::cout << "Enter number of players:";
+	std::cin >> num_players;
+	for (std::size_t i = 1; i <= num_players; i++) {
+		std::size_t money = 0;
+		std::cout << "Enter amount of money the player number " << i << " has:";
+		std::cin >> money;
+		players.emplace_back(money);
 	}
-	std::cout << "Dealer has money - " << dealer.getMoney();
+    std::cout<<std::endl;
+
+	std::cout<<"H - HIT. S - STAND. D - DOUBLE. C - CONTINUE ROUND"<<std::endl<<std::endl;
+
+    char round_flag = 'C';
+
+
+    while(round_flag=='C') {
+
+        startRound();
+
+        round_flag = 'N';
+        int count = 1;
+        for(auto it = players.begin(); it != players.end();) {
+            if (it->getMoney() != 0) {
+                char action;
+                std::cout << "You are player number:" << count << ". C - CONTINUE ROUND" << std::endl;
+                std::cout << "Action:";
+                std::cin >> action;
+                if (action != 'C') {
+                    it = players.erase(it);
+                }
+                else {
+                    round_flag = action;
+                    it->clearHand();
+                    ++it;
+                }
+            }
+            else {
+                it = players.erase(it);
+            }
+            count++;
+        }
+        dealer.clearHand();
+    }
 }

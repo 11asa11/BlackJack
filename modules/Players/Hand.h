@@ -11,5 +11,6 @@ public:
 	void takeCard(Card& card);
 	std::vector<std::string> showInfo();
 	std::size_t values();
+	void clear();
 	std::size_t number_cards();
 };

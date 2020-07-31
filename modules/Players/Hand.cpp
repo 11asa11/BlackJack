@@ -22,6 +22,10 @@ std::size_t Hand::values() {
 	return val;
 }
 
+void Hand::clear() {
+    h_cards.clear();
+}
+
 std::size_t Hand::number_cards() {
 	return h_cards.size();
 }

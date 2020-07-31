@@ -68,9 +68,13 @@ bool BJ_Player::isBlackJack() {
 	return Points() == 21;
 }
 
+void BJ_Player::clearHand() {
+    player_hand.clear();
+}
+
 void BJ_Player::Double() {
-    if (static_cast<int>(money - bet) < 0) {
-        std::cout<<"money="<<money<<". bet="<<bet<<std::endl;
+    if (money < bet) {
+        //std::cout<<"money="<<money<<". bet="<<bet<<std::endl;
         throw "Not enough money";
     }
     else {
